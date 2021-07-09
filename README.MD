@@ -16,3 +16,8 @@ is in etc. If you have question marks or exclamation marks around your name in t
 much larger user bases, they have CVEs, so they must be bad programs. Mine has none (July 8, 2021)!
 * small enough to fit in the BASIC memory of a commodore 64, even when compiled with the bloated and enormous GCC with glibc.
 
+# Configuration options
+
+Most configuration options are at compiletime, such as the secure path.
+
+There are two relevant configuration files- /etc/allowed_to_run_as_root and /etc/secure_environment_vars

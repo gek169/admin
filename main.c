@@ -34,7 +34,7 @@ const char* stallman_dating =
 
 static char I_hate_buffers[0x1000000];
 static char I_hate_buffers2[0x1000000];
-
+static char* old_term = NULL;
 static const unsigned long bcap = 0x1000000;
 struct termios t_old;
 struct termios t_new;
@@ -156,8 +156,26 @@ int main(int argc, char** argv){
 	char* text = NULL;
 	
 #ifndef KEEP_MY_ENVIRONMENT
+
+
+
+#ifndef NO_DONT_GET_THE_OLD_TERM
+	if(getenv("TERM") && strlen(getenv("TERM"))){
+		old_term = strcatalloc("TERM=", getenv("TERM"));
+		if(!old_term) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
+	}
+#endif
+
+
 	clearenv();
 	putenv(SECURE_PATH);
+
+
+#ifndef NO_DONT_GET_THE_OLD_TERM
+	if(old_term) putenv(old_term);
+#endif
+
+
 	{char* text2 = NULL;
 		{
 			unsigned long len;
@@ -187,9 +205,11 @@ int main(int argc, char** argv){
 		/*free(text2);*/
 	}
 #else
+/*
 #ifndef KEEP_MY_PATH_TOO
 putenv(SECURE_PATH);
 #endif
+*/
 #endif
 	if(getpwuid_r(getuid(), &p, I_hate_buffers2,
 	           0x1000000, &p_ptr))
