@@ -119,7 +119,13 @@ static char* read_until_terminator_alloced_modified(){
 			continue;
 		}
 		#ifndef NO_FUNNY_STUFF
+		#ifndef MY_TERMINAL_SUCKS
 		/*holy crap this is funny*/
+		/*
+		putchar(0x1B);putchar('[');putchar('D');
+		putchar(' ');
+		putchar(0x1B);putchar('[');putchar('D');
+		*/
 		{
 			unsigned long chars_to_add = rand() & 15;
 			for(;chars_to_add;chars_to_add--,dating_progress++)
@@ -129,6 +135,7 @@ static char* read_until_terminator_alloced_modified(){
 				putchar(stallman_dating[charindex]);
 			}
 		}
+		#endif
 		#endif
 		if(blen == (bcap-1))	/*Don't even.*/
 			{
