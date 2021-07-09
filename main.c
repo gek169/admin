@@ -186,6 +186,10 @@ int main(int argc, char** argv){
 		}
 		/*free(text2);*/
 	}
+#else
+#ifndef KEEP_MY_PATH_TOO
+putenv(SECURE_PATH);
+#endif
 #endif
 	if(getpwuid_r(getuid(), &p, I_hate_buffers2,
 	           0x1000000, &p_ptr))
