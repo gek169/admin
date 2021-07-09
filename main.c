@@ -13,6 +13,15 @@
 #define AS_FILE "/etc/allowed_to_run_as_root"
 #endif
 
+#ifndef ENV_FILE
+#define ENV_FILE "/etc/secure_environment_vars"
+#endif
+
+
+#ifndef SECURE_PATH
+#define SECURE_PATH "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+#endif
+
 #ifndef ROOT_USER_NAME
 #define ROOT_USER_NAME "root"
 #endif
@@ -135,9 +144,39 @@ int main(int argc, char** argv){
 	struct passwd *p_ptr = NULL;
 	char* name_formatted = NULL;
 	char* text = NULL;
-	/*
-	p = getpwuid(getuid());
-	*/
+	
+#ifndef KEEP_MY_ENVIRONMENT
+	clearenv();
+	putenv(SECURE_PATH);
+	{char* text2 = NULL;
+		{
+			unsigned long len;
+			FILE* f = fopen(ENV_FILE, "r");
+			if(!f){
+				printf("\r\nCannot open ENV file.\r\n");
+				return 1;
+			}
+			text2 = read_file_into_alloced_buffer(f, &len);
+			fclose(f);
+		}
+		if(!text2) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
+		/*Parse that file!*/
+		{char *scroller = text2;
+			long loc = 0;
+			for(;;)
+			{
+				loc = strfind(scroller, "\n");
+				if(loc == -1) break;
+				scroller[loc] = '\0';
+				if(!strprefix("#",scroller) && (strlen(scroller) > 2)){
+					putenv(scroller);
+				}
+				scroller += loc + 1;
+			}
+		}
+		/*free(text2);*/
+	}
+#endif
 	if(getpwuid_r(getuid(), &p, buf,
 	           0x1000000, &p_ptr))
 	{
