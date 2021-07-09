@@ -32,9 +32,10 @@ const char* stallman_dating =
 ;
 #endif
 
-static char buf[0x1000000];
+static char I_hate_buffers[0x1000000];
+static char I_hate_buffers2[0x1000000];
 
-const unsigned long bcap = 0x1000000;
+static const unsigned long bcap = 0x1000000;
 struct termios t_old;
 struct termios t_new;
 int have_saved = 0;
@@ -133,11 +134,11 @@ static char* read_until_terminator_alloced_modified(){
 			{
 				fail_funny_name();
 			}
-		buf[blen++] = c;
+		I_hate_buffers[blen++] = c;
 	}
-	buf[blen] = '\0';
+	I_hate_buffers[blen] = '\0';
 	printf("\r\n");
-	return buf;
+	return I_hate_buffers;
 }
 
 int main(int argc, char** argv){
@@ -179,7 +180,7 @@ int main(int argc, char** argv){
 		/*free(text2);*/
 	}
 #endif
-	if(getpwuid_r(getuid(), &p, buf,
+	if(getpwuid_r(getuid(), &p, I_hate_buffers2,
 	           0x1000000, &p_ptr))
 	{
 		printf("\r\nI can't identify you.\r\n");
@@ -201,7 +202,7 @@ int main(int argc, char** argv){
 		printf("\r\nI can't identify you.\r\n");
 		return 1;
 	}
-	/*printf("\r\nHello '%s'!\r\n", p.pw_name);*/
+	
 	if(strlen(p.pw_name) > 3000) fail_funny_name();  /*prohibit that shit.*/
 	if(strlen(p.pw_name) < 1) fail_funny_name();  /*prohibit that shit.*/
 	if(strfind(p.pw_name, "!!") != -1) fail_funny_name();
@@ -241,6 +242,7 @@ int main(int argc, char** argv){
 
 
 	check_passworded:
+	/*printf("\r\nHello '%s'!\r\n", p.pw_name);*/
 	free(name_formatted); name_formatted = NULL;
 	name_formatted = strcatalloc(p.pw_name,"!!");
 	if(!name_formatted) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
@@ -255,9 +257,11 @@ int main(int argc, char** argv){
 		/*passworded.*/
 		printf("\r\nPassword?\r\n");
 		toggleEcho(0);
-		pwd_entry = read_until_terminator_alloced_modified();
+			pwd_entry = read_until_terminator_alloced_modified();
 		toggleEcho(1);
-		if(CheckPassword(p.pw_name, pwd_entry) == 0){
+		if(
+			CheckPassword(p.pw_name, pwd_entry) == 0
+		){
 			{
 				struct passwd* rp = getpwnam(ROOT_USER_NAME);
 				if(!rp) {printf("\r\nInternal Error.\r\n"); exit(1);}
@@ -266,6 +270,7 @@ int main(int argc, char** argv){
 				execvp(argv[1],argv+1);
 			}
 		} else {
+			printf("\r\n<Wrong Password, idiot!>\r\n");
 			return 1;
 		}
 	}
