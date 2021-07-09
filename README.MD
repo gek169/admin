@@ -31,3 +31,7 @@ MY_TERMINAL_SUCKS - disable terminal state modification.
 NO_FUNNY_STUFF - disable the stallman funny
 
 KEEP_MY_ENVIRONMENT - disable environment sanitization
+
+KEEP_MY_PATH_TOO - disable path sanitization (for with KEEP_MY_ENVIRONMENT)
+
+NO_DONT_GET_THE_OLD_TERM - do not fetch the user's current TERM variable.
