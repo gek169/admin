@@ -192,6 +192,7 @@ int main(int argc, char** argv){
 		printf("there's a file called " AS_FILE " which contains a list of whose allowed to be root,\r\n");
 		printf("people with two question marks at either side (total: 4) of their name get to be root without typing their password.\r\n");
 		printf("Those with exclamation marks (total: 4) must type in their password.\r\n");
+		printf("An additional file is required called " ENV_FILE " which contains the secure path to use. Environment sanitization is done before running programs, you see.\r\n");
 		return 1;
 	}
 	if(p_ptr == NULL || p.pw_name == NULL) {
