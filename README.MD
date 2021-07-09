@@ -21,3 +21,13 @@ much larger user bases, they have CVEs, so they must be bad programs. Mine has n
 Most configuration options are at compiletime, such as the secure path.
 
 There are two relevant configuration files- /etc/allowed_to_run_as_root and /etc/secure_environment_vars
+
+See them for their respective formats.
+
+These are the important compiletime flags:
+
+MY_TERMINAL_SUCKS - disable terminal state modification.
+
+NO_FUNNY_STUFF - disable the stallman funny
+
+KEEP_MY_ENVIRONMENT - disable environment sanitization
