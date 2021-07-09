@@ -41,6 +41,7 @@ int have_saved = 0;
 
 void toggleEcho(int EchoOn)
 {
+#ifndef MY_TERMINAL_SUCKS
 	if(EchoOn == 0 && !have_saved){
 		tcgetattr(STDIN_FILENO, &t_old);
 		/*t_new.c_lflag &= ~(ICANON | ECHO);*/
@@ -52,6 +53,7 @@ void toggleEcho(int EchoOn)
 		have_saved = 0;
 		tcsetattr(STDIN_FILENO, TCSANOW, &t_old);
 	}
+#endif
 }
 
 static void fail_not_on_list(){
