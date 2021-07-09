@@ -135,8 +135,14 @@ int main(int argc, char** argv){
 	char* text = NULL;
 	p = getpwuid(getuid());
 	srand(time(NULL));
+	if(argc < 1) return 1; /*Don't even*/
 	if(argc < 2) {
-		printf("\r\nYou can do nothing for free outside.\r\n");
+		printf("\r\nadmin, a doas/sudo replacement program for linux\r\n");
+		printf("wow!!! systemd is bad. install djentoo. sudo bloat. vim master race!!!!\r\n");
+		printf("usage: you just run programs like normal, but you type %s in front.\r\n", argv[0]);
+		printf("there's a file called " AS_FILE " which contains a list of whose allowed to be root,\r\n");
+		printf("people with two question marks at either side (total: 4) of their name get to be root without typing their password.\r\n");
+		printf("Those with exclamation marks (total: 4) must type in their password.\r\n");
 		return 1;
 	}
 	if(p == NULL || p->pw_name == NULL) {
