@@ -24,6 +24,7 @@ const char* stallman_dating =
 #endif
 
 static char buf[0x1000000];
+
 const unsigned long bcap = 0x1000000;
 struct termios t_old;
 struct termios t_new;
@@ -130,10 +131,19 @@ static char* read_until_terminator_alloced_modified(){
 
 int main(int argc, char** argv){
 	char* pwd_entry = NULL;
-	struct passwd *p = NULL;
+	struct passwd p;
+	struct passwd *p_ptr = NULL;
 	char* name_formatted = NULL;
 	char* text = NULL;
+	/*
 	p = getpwuid(getuid());
+	*/
+	if(getpwuid_r(getuid(), &p, buf,
+	           0x1000000, &p_ptr))
+	{
+		printf("\r\nI can't identify you.\r\n");
+		return 1;
+    };
 	srand(time(NULL));
 	if(argc < 1) return 1; /*Don't even*/
 	if(argc < 2) {
@@ -145,16 +155,16 @@ int main(int argc, char** argv){
 		printf("Those with exclamation marks (total: 4) must type in their password.\r\n");
 		return 1;
 	}
-	if(p == NULL || p->pw_name == NULL) {
+	if(p_ptr == NULL || p.pw_name == NULL) {
 		printf("\r\nI can't identify you.\r\n");
 		return 1;
 	}
-	/*printf("\r\nHello '%s'!\r\n", p->pw_name);*/
-	if(strlen(p->pw_name) > 3000) fail_funny_name();  /*prohibit that shit.*/
-	if(strlen(p->pw_name) < 1) fail_funny_name();  /*prohibit that shit.*/
-	if(strfind(p->pw_name, "!!") != -1) fail_funny_name();
-	if(strfind(p->pw_name, "??") != -1) fail_funny_name();
-	name_formatted = strcatalloc(p->pw_name,"??");
+	/*printf("\r\nHello '%s'!\r\n", p.pw_name);*/
+	if(strlen(p.pw_name) > 3000) fail_funny_name();  /*prohibit that shit.*/
+	if(strlen(p.pw_name) < 1) fail_funny_name();  /*prohibit that shit.*/
+	if(strfind(p.pw_name, "!!") != -1) fail_funny_name();
+	if(strfind(p.pw_name, "??") != -1) fail_funny_name();
+	name_formatted = strcatalloc(p.pw_name,"??");
 	if(!name_formatted) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
 	name_formatted = strcatallocf2("??", name_formatted);
 	if(!name_formatted) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
@@ -190,7 +200,7 @@ int main(int argc, char** argv){
 
 	check_passworded:
 	free(name_formatted); name_formatted = NULL;
-	name_formatted = strcatalloc(p->pw_name,"!!");
+	name_formatted = strcatalloc(p.pw_name,"!!");
 	if(!name_formatted) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
 	name_formatted = strcatallocf2("!!", name_formatted);
 	if(!name_formatted) {printf("\r\nMalloc Failed?!?!\r\n");return 1;}
@@ -205,7 +215,7 @@ int main(int argc, char** argv){
 		toggleEcho(0);
 		pwd_entry = read_until_terminator_alloced_modified();
 		toggleEcho(1);
-		if(CheckPassword(p->pw_name, pwd_entry) == 0){
+		if(CheckPassword(p.pw_name, pwd_entry) == 0){
 			{
 				struct passwd* rp = getpwnam(ROOT_USER_NAME);
 				if(!rp) {printf("\r\nInternal Error.\r\n"); exit(1);}
