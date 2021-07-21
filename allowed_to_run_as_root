@@ -10,5 +10,13 @@ you will never interfere with the function of the program.
 
 You will make it slightly slower, though, so maybe don't write a book in here.
 
+To add yourself, just enter your unix username surrounded in two question marks anywhere in this file.
+
+These people are allowed to login without entering their password:
+
 ??gek??
 ??pi??
+
+These people have to type it:
+
+!!richardstallman!!
