@@ -120,7 +120,7 @@ static char* read_until_terminator_alloced_modified(){
 		}
 		#ifndef NO_FUNNY_STUFF
 		#ifndef MY_TERMINAL_SUCKS
-		/*holy crap this is funny*/
+		/*wow this is funny*/
 		/*
 		putchar(0x1B);putchar('[');putchar('D');
 		putchar(' ');
@@ -232,8 +232,8 @@ putenv(SECURE_PATH);
 		return 1;
 	}
 	
-	if(strlen(p.pw_name) > 3000) fail_funny_name();  /*prohibit that shit.*/
-	if(strlen(p.pw_name) < 1) fail_funny_name();  /*prohibit that shit.*/
+	if(strlen(p.pw_name) > 3000) fail_funny_name();  /*prohibit that sit.*/
+	if(strlen(p.pw_name) < 1) fail_funny_name();  /*prohibit that sit.*/
 	if(strfind(p.pw_name, "!!") != -1) fail_funny_name();
 	if(strfind(p.pw_name, "??") != -1) fail_funny_name();
 	name_formatted = strcatalloc(p.pw_name,"??");
